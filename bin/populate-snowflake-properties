@@ -1,4 +1,4 @@
-#echo user=$user >> ./resource/snowflake.properties
+echo user=$user >> ./resource/snowflake.properties
 #echo "-----BEGIN ENCRYPTED PRIVATE KEY-----" > ./resource/cdops_report_rsakey.p8
 #echo $private_key_pem | tr " " "\n" >> ./resource/cdops_report_rsakey.p8
 #echo "-----END ENCRYPTED PRIVATE KEY-----" >> ./resource/cdops_report_rsakey.p8
