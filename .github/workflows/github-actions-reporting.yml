@@ -35,7 +35,7 @@ jobs:
           python-version: '3.7'
       - name: Copy variable to path
         run: |
-          echo "$PRIVATE_KEY_FILE" > /home/runner/work/Reporting_Dashboards_personal/resource/phdata_cdops_rsa_key.p8
+          echo "$PRIVATE_KEY_FILE" > resource/phdata_cdops_rsa_key.p8
           echo "Copied the variable to file"
 
       - name: Run SQL Dry Run
