@@ -1,0 +1,56 @@
+name: CDOPS COST REPORTING Pipeline
+
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches:
+      - main
+env:
+   user: ${{vars.user}}
+   PRIVATE_KEY_PASSPHRASE: ${{ secrets.PRIVATE_KEY_FILE_PWD }}
+   PRIVATE_KEY_FILE: ${{ secrets.PRIVATE_KEY_FILE }}
+   TASK_WAREHOUSE: ${{vars.TASK_WAREHOUSE}}
+   ACCOUNT_LOCATOR: ${{ vars.ACCOUNT_LOCATOR }}
+   ORGANIZATION: ${{ vars.ORGANIZATION }}
+
+jobs:
+  build:
+    #container: case.artifacts.medtronic.com/docker-dev-virtual/openjdk:1
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Set up OpenJDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 11
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.7'
+      - name: Copy variable to path
+        run: |
+          echo "$PRIVATE_KEY_FILE" > /home/runner/work/cdops-reporting/cdops-reporting/resource/phdata_cdops_rsa_key.p8
+          echo "Copied the variable to file"
+
+      - name: Run SQL Dry Run
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: | 
+          chmod +x bin/fetch.sh bin/dryRun.sh bin/checkkeyvalid.sh
+          bin/fetch.sh
+          bin/dryRun.sh
+          echo "SQL Dry run complete."
+
+      - name: Run SQL Provision
+        if: github.event_name == 'push' 
+        run: |
+            chmod +x bin/fetch.sh bin/provision.sh
+            bin/fetch.sh
+            bin/provision.sh
+            echo "SQL Provision complete."
