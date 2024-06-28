@@ -1,4 +1,4 @@
-name: CDOPS COST REPORTING Pipelines
+name: CDOPS COST REPORTING Pipeline
 
 on:
   pull_request:
