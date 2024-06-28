@@ -14,6 +14,7 @@ env:
    TASK_WAREHOUSE: ${{vars.TASK_WAREHOUSE}}
    ACCOUNT_LOCATOR: ${{ vars.ACCOUNT_LOCATOR }}
    ORGANIZATION: ${{ vars.ORGANIZATION }}
+   password: ${{ secrets.password }}
 
 jobs:
   build:
